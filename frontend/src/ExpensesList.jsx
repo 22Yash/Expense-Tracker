@@ -1,21 +1,27 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 
-const dummyExpenses = [
-  { id: 1, name: "Groceries", amount: 50, date: "2025-02-10" },
-  { id: 2, name: "Transport", amount: 20, date: "2025-02-12" },
-  { id: 3, name: "Dining", amount: 35, date: "2025-02-14" },
-];
-
 function ExpensesList() {
-  const [expenses, setExpenses] = useState(dummyExpenses);
+  const [expenses, setExpenses] = useState([]);
+
+  // Fetch Expenses from Backend
+  useEffect(() => {
+    fetch("http://localhost:4000/api/expenses")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched Expenses:", data); // Log the entire array
+        data.forEach((expense, index) => {
+          console.log(`Expense ${index}:`, expense);  // Log each expense
+        });
+        setExpenses(data);
+      })
+      .catch((error) => console.error("Error fetching expenses:", error));
+  }, []);
 
   return (
-    <div className="flex h-screen bg-[#242424] gap-[30px    ] text-gray-300">
-   <Sidebar/>
-
+    <div className="flex h-screen bg-[#242424] gap-[30px] text-gray-300">
+      <Sidebar />
       <div className="flex-1 p-6">
         <h1 className="text-2xl font-bold text-teal-400 mb-6">Previous Expenses</h1>
 
@@ -29,17 +35,19 @@ function ExpensesList() {
                   <th className="p-3">Name</th>
                   <th className="p-3">Amount ($)</th>
                   <th className="p-3">Date</th>
+                  <th className="p-3">Category</th>
                 </tr>
               </thead>
               <tbody>
-                {expenses.map((expense) => (
-                  <tr key={expense.id} className="border-t border-gray-600">
-                    <td className="p-3">{expense.name}</td>
-                    <td className="p-3 text-teal-400">${expense.amount}</td>
-                    <td className="p-3">{expense.date}</td>
-                  </tr>
-                ))}
-              </tbody>
+  {expenses.map((expense) => (
+    <tr key={expense._id} className="border-t border-gray-600">
+      <td className="p-3">{expense.name}</td> {/* If the name is actually in 'name' */}
+      <td className="p-3 text-teal-400">${expense.amount}</td> {/* If the amount is in 'amount' */}
+      <td className="p-3">{expense.date}</td>
+      <td className="p-3">{expense.category}</td>
+    </tr>
+  ))}
+</tbody>
             </table>
           </div>
         )}

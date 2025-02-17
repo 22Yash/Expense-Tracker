@@ -28,30 +28,79 @@ export default function NewExpenseForm() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setInvoice(URL.createObjectURL(file));
+      setInvoice(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Expense Submitted:", formData);
+  
+    const dataToSend = {
+      subject: formData.subject,
+      merchant: formData.merchant,
+      date: formData.date,
+      total: formData.total,
+      currency: formData.currency,
+      reimbursable: formData.reimbursable,
+      category: formData.category,
+      description: formData.description,
+      employee: formData.employee,
+      addToReport: formData.addToReport,
+    };
+  
+    // Log the data to verify it includes all fields
+    console.log("Data to Send:", dataToSend);
+  
+    try {
+      const response = await fetch("http://localhost:4000/api/expenses/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+  
+      if (response.ok) {
+        alert("Expense added successfully!");
+        setFormData({
+          subject: "",
+          merchant: "",
+          date: "",
+          total: "",
+          currency: "USD",
+          reimbursable: false,
+          category: "",
+          description: "",
+          employee: "",
+          addToReport: false,
+        });
+      } else {
+        alert("Error adding expense!");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Something went wrong!");
+    }
   };
+  
+  
+  
 
   return (
     <div className="h-screen w-full bg-[#1C1C1C] text-white flex gap-[30px]">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#141414] ml-[-10px] ">
-       <Sidebar/>
+      <aside className="w-64 bg-[#141414] ml-[-10px]">
+        <Sidebar />
       </aside>
 
       {/* Main Form */}
-      <div className="flex-1   p-8">
-        <div className="bg-[#242424] h-[650px]  p-2 rounded-lg">
+      <div className="flex-1 p-8">
+        <div className="bg-[#242424] h-[650px] p-2 rounded-lg">
           <h2 className="text-xl font-bold">New Expense</h2>
 
           <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 mt-6">
             {/* Left Inputs */}
-            <div className="space-y-2 h-[400px] ">
+            <div className="space-y-2 h-[400px]">
               <div>
                 <label className="block text-gray-300">Subject*</label>
                 <input
@@ -169,7 +218,11 @@ export default function NewExpenseForm() {
             {/* Right Side - File Upload */}
             <div className="bg-[#1C1C1C] flex items-center justify-center rounded-lg border-2 border-dashed border-gray-500 p-6">
               {invoice ? (
-                <img src={invoice} alt="Invoice" className="w-full h-full object-cover" />
+                <img
+                  src={URL.createObjectURL(invoice)}
+                  alt="Invoice"
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <label className="flex flex-col items-center justify-center cursor-pointer">
                   <span className="text-3xl">+</span>
