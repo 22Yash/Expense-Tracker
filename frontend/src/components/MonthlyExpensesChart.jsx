@@ -5,7 +5,7 @@ function MonthlyExpensesChart() {
   const [monthlyData, setMonthlyData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/expenses")
+    fetch("https://expense-tracker-82ck.onrender.com/api/expenses")
       .then((res) => res.json())
       .then((data) => {
         const groupedData = data.reduce((acc, expense) => {

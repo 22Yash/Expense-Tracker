@@ -19,7 +19,7 @@ function Sidebar() {
           alt="Profile"
           className="w-12 h-12 rounded-full"
         />
-        <span className="text-gray-300">Janice Chandler</span>
+        <span className="text-gray-300">YASH DOKE</span>
       </div>
 
       <nav className="flex-1 space-y-2">

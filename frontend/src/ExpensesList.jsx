@@ -7,7 +7,7 @@ function ExpensesList() {
 
   // Fetch Expenses from Backend
   useEffect(() => {
-    fetch("http://localhost:4000/api/expenses")
+    fetch("https://expense-tracker-82ck.onrender.com/api/expenses")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched Expenses:", data); // Log the entire array
