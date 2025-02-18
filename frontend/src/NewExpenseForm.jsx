@@ -52,7 +52,7 @@ export default function NewExpenseForm() {
     console.log("Data to Send:", dataToSend);
   
     try {
-      const response = await fetch("http://localhost:4000/api/expenses/add", {
+      const response = await fetch("http://localhost:4000/api/expenses/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

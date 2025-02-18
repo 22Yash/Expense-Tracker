@@ -41,8 +41,8 @@ function ExpensesList() {
               <tbody>
   {expenses.map((expense) => (
     <tr key={expense._id} className="border-t border-gray-600">
-      <td className="p-3">{expense.name}</td> {/* If the name is actually in 'name' */}
-      <td className="p-3 text-teal-400">${expense.amount}</td> {/* If the amount is in 'amount' */}
+      <td className="p-3">{expense.subject}</td> {/* If the name is actually in 'name' */}
+      <td className="p-3 text-teal-400">${expense.total}</td> {/* If the amount is in 'amount' */}
       <td className="p-3">{expense.date}</td>
       <td className="p-3">{expense.category}</td>
     </tr>

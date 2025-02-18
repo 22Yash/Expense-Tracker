@@ -5,10 +5,7 @@ import { Home, CreditCard, Plane, CheckSquare, Settings, PhoneCall } from "lucid
 const navigation = [
   { name: "Home", icon: Home, path: "/" },
   { name: "Expenses", icon: CreditCard, path: "/expenses" },
-  { name: "Trips", icon: Plane, path: "/trips" },
-  { name: "Approvals", icon: CheckSquare, path: "/approvals" },
-  { name: "Settings", icon: Settings, path: "/settings" },
-  { name: "Support", icon: PhoneCall, path: "/support" },
+ 
 ];
 
 function Sidebar() {

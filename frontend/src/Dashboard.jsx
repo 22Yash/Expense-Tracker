@@ -1,10 +1,11 @@
 import React from "react";
 import Sidebar from "./components/Sidebar";
-import PendingTasks from "./components/PendingTasks";
-import RecentExpenses from "./components/RecentExpenses";
+
 import QuickAccess from "./components/QuickAccess";
 import TeamSpendingChart from "./components/TeamSpendingChart";
 import ExpensesChart from "./components/ExpensesChart";
+import MonthlyExpensesChart from "./components/MonthlyExpensesChart";
+import CategoryWisePieChart from "./components/CategoryWisePieChart";
 
 function Dashboard() {
   return (
@@ -13,19 +14,14 @@ function Dashboard() {
 
       <div className="flex-1 p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <PendingTasks />
-          <RecentExpenses />
+          <MonthlyExpensesChart/>
+          <CategoryWisePieChart/>
+          
         </div>
 
         <QuickAccess />
 
-        <div className="bg-[#242424] border-0 p-6 rounded-lg">
-          <h2 className="text-lg font-semibold mb-6">Monthly Report</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <TeamSpendingChart />
-            <ExpensesChart />
-          </div>
-        </div>
+        
       </div>
     </div>
   );
