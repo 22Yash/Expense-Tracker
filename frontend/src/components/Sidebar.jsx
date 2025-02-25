@@ -5,6 +5,8 @@ import { Home, CreditCard, Plane, CheckSquare, Settings, PhoneCall } from "lucid
 const navigation = [
   { name: "Home", icon: Home, path: "/" },
   { name: "Expenses", icon: CreditCard, path: "/expenses" },
+  { name: "Signup", icon: CreditCard, path: "/signup" },
+  { name: "Login", icon: CreditCard, path: "/login" },
  
 ];
 
