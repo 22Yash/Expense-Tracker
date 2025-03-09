@@ -9,7 +9,8 @@ const RegisterPage = () => {
     const userData = { name, email, password };
     e.preventDefault();
     try{
-        const response = await fetch('http://localhost:4000/auth/register',{
+      const response = await fetch('https://expense-tracker-82ck.onrender.com/auth/register', {
+
             method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)

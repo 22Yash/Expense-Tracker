@@ -9,7 +9,7 @@ const Login = () => {
     const userData = { email, password };
 
     try {
-      const response = await fetch('http://localhost:4000/auth/login', {
+      const response = await fetch('https://expense-tracker-82ck.onrender.com/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
