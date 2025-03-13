@@ -3,11 +3,12 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/User.js';
 import dotenv from 'dotenv';
+import verifyToken from "../middlewares/auth.js";
 
 const router = express.Router();
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;// Change this to a strong secret key
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // 🔹 Register Route
 router.post('/register', async (req, res) => {
@@ -46,26 +47,26 @@ router.post('/login', async (req, res) => {
         // Generate JWT Token
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
 
-        res.json({ success: true, message: "Login successful!", token, user });
+        res.json({ 
+            success: true, 
+            message: "Login successful!", 
+            token, 
+            user: { id: user._id, name: user.name, email: user.email } // Only send necessary user data
+        });
     } catch (error) {
         res.status(500).json({ message: "Server error" });
     }
 });
 
 // 🔹 Protected Route Example
-router.get('/protected', async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1];
 
-    if (!token) {
-        return res.status(401).json({ message: "Access denied! No token provided." });
-    }
 
+router.get('/protected', verifyToken, async (req, res) => {
     try {
-        const verified = jwt.verify(token, JWT_SECRET);
-        req.user = verified;
-        res.json({ message: "Protected route accessed", user: verified });
+        const user = await UserModel.findById(req.user.id).select("-password"); // Exclude password
+        res.json({ message: "Protected route accessed", user });
     } catch (error) {
-        res.status(403).json({ message: "Invalid token!" });
+        res.status(500).json({ message: "Server error" });
     }
 });
 

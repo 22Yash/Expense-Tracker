@@ -1,34 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // ✅ React Router for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = { email, password };
-
+  
     try {
-      const response = await fetch('https://expense-tracker-82ck.onrender.com/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
-      });
-
+      const response = await fetch(
+        "https://expense-tracker-82ck.onrender.com/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userData),
+        }
+      );
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         alert(data.message || "Login successful!");
-        // Redirect to another page if needed
-        window.location.href = '/dashboard'; 
+  
+        // ✅ Ensure `userId` is stored properly
+        if (data.user && data.user._id) {
+          localStorage.setItem("userId", data.user._id);
+          console.log("User ID stored:", data.user._id);
+        } else {
+          console.error("Error: User ID not found in response.");
+        }
+  
+        // ✅ Store token & user data
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+  
+        // ✅ Redirect using React Router
+        navigate("/dashboard");
       } else {
         alert(data.message || "Invalid email or password!");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Login Error:", error);
       alert("Something went wrong. Please try again.");
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -55,7 +74,10 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-2 rounded"
+          >
             Login
           </button>
         </form>

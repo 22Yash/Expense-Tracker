@@ -7,17 +7,19 @@ function ExpensesList() {
 
   // Fetch Expenses from Backend
   useEffect(() => {
-    fetch("https://expense-tracker-82ck.onrender.com/api/expenses")
+    const userId = localStorage.getItem("userId"); // Get userId from localStorage
+  
+    if (!userId) {
+      console.error("User ID not found!");
+      return;
+    }
+  
+    fetch(`https://expense-tracker-82ck.onrender.com/api/expenses?userId=${userId}`)
       .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched Expenses:", data); // Log the entire array
-        data.forEach((expense, index) => {
-          console.log(`Expense ${index}:`, expense);  // Log each expense
-        });
-        setExpenses(data);
-      })
+      .then((data) => setExpenses(data))
       .catch((error) => console.error("Error fetching expenses:", error));
   }, []);
+  
 
   return (
     <div className="flex h-screen bg-[#242424] gap-[30px] text-gray-300">

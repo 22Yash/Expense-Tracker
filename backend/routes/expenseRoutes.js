@@ -4,29 +4,42 @@ import Expense from "../models/Expense.js";
 const router = express.Router();
 
 // Add a new expense
-router.post("/", async (req, res) => {  // Changed from "/add" to "/"
+router.post("/", async (req, res) => {
     try {
-        console.log("Incoming Data:", req.body); // Log the incoming data to verify
-    
-        const newExpense = new Expense(req.body);
+        const { userId, subject, merchant, date, total, currency, reimbursable, category, description, employee, addToReport } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const newExpense = new Expense({ 
+            userId, subject, merchant, date, total, currency, reimbursable, category, description, employee, addToReport
+        });
+
         await newExpense.save();
         res.status(201).json(newExpense);
     } catch (err) {
-        console.error("Error saving expense:", err);
         res.status(500).json({ error: err.message });
     }
 });
 
+
 // Get all expenses
 router.get("/", async (req, res) => {
     try {
-        const expenses = await Expense.find();
-        console.log("Fetched Expenses:", expenses); // Log expenses before sending
+        const { userId } = req.query; // Get userId from request query
+
+        if (!userId) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const expenses = await Expense.find({ userId }); // Fetch expenses for the user
         res.json(expenses);
     } catch (err) {
         console.error("Error fetching expenses:", err);
         res.status(500).json({ error: err.message });
     }
 });
+
 
 export default router;

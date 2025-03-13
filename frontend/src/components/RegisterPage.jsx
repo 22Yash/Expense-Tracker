@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
+
 
 const RegisterPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
   const handleSubmit = async(e) => {
     const userData = { name, email, password };
@@ -20,7 +23,7 @@ const RegisterPage = () => {
       
       if (response.ok) {
         alert(data.message || "Registration successful!"); // Show success alert
-        window.location.href = '/dashboard';
+        navigate("/dashboard");
       } else {
         alert(data.message || "Registration failed!"); // Show error alert if failed
       }
